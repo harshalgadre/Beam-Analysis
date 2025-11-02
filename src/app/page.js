@@ -80,7 +80,7 @@ export default function HomePage() {
               <li>Select a tool from the palette (supports or loads)</li>
               <li>Click on the beam to place items</li>
               <li>Modify positions and values in the edit panels</li>
-              <li>Click "Analyze Beam" to calculate results</li>
+              <li>Click &quot;Analyze Beam&quot; to calculate results</li>
             </ol>
             <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-blue-500/20 rounded-lg">
               <p className="font-medium text-xs sm:text-sm">💡 Tip:</p>
