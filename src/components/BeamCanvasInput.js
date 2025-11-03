@@ -129,18 +129,48 @@ export default function BeamCanvasInput({ length, supports, loads, onChange }) {
       );
     }
     if (l.type === 'udl') {
+      // Calculate positions for the UDL visualization
+      const startX = posToCanvas(l.start, length);
+      const endX = posToCanvas(l.end, length);
+      const yPosition = CANVAS_HEIGHT / 2 - BEAM_HEIGHT / 2 - 20;
+      
+      // Create arrow indicators below the UDL line
+      const arrows = [];
+      const arrowCount = Math.max(3, Math.min(8, Math.floor((endX - startX) / 30))); // Between 3-8 arrows
+      const arrowSpacing = (endX - startX) / (arrowCount + 1);
+      
+      for (let i = 1; i <= arrowCount; i++) {
+        const x = startX + i * arrowSpacing;
+        arrows.push(
+          <Line
+            key={`arrow-${i}`}
+            points={[x, yPosition + 15, x, yPosition + 25]}
+            stroke={loadColors.udl}
+            strokeWidth={2}
+          />
+        );
+        // Add arrowhead
+        arrows.push(
+          <Line
+            key={`arrowhead-${i}`}
+            points={[x - 4, yPosition + 21, x, yPosition + 25, x + 4, yPosition + 21]}
+            stroke={loadColors.udl}
+            strokeWidth={2}
+          />
+        );
+      }
+      
       return (
-        <Rect
-          key={idx}
-          x={posToCanvas(l.start, length)}
-          y={CANVAS_HEIGHT / 2 - BEAM_HEIGHT / 2 - 20}
-          width={posToCanvas(l.end, length) - posToCanvas(l.start, length)}
-          height={10}
-          fill={loadColors.udl}
-          opacity={0.7}
-          shadowColor="rgba(0,0,0,0.2)"
-          shadowBlur={3}
-        />
+        <React.Fragment key={idx}>
+          {/* Green line for UDL */}
+          <Line
+            points={[startX, yPosition, endX, yPosition]}
+            stroke={loadColors.udl}
+            strokeWidth={4}
+          />
+          {/* Arrows below the line */}
+          {arrows}
+        </React.Fragment>
       );
     }
     if (l.type === 'triangular') {
